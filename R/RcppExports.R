@@ -44,20 +44,20 @@ seq2matHigh <- function(sequence, order) {
 #' @rdname markovchainFit
 #' 
 #' @export
-createSequenceMatrix <- function(stringchar, toRowProbs = FALSE, sanitize = FALSE, possibleStates = character()) {
-    .Call('markovchain_createSequenceMatrix', PACKAGE = 'markovchain', stringchar, toRowProbs, sanitize, possibleStates)
+createSequenceMatrix <- function(stringchar, toRowProbs = FALSE, sanitize = FALSE, possibleStates = character(), naRemove = TRUE) {
+    .Call('markovchain_createSequenceMatrix', PACKAGE = 'markovchain', stringchar, toRowProbs, sanitize, possibleStates, naRemove)
 }
 
-.mcListFitForList <- function(data) {
-    .Call('markovchain_mcListFitForList', PACKAGE = 'markovchain', data)
+.mcListFitForList <- function(data, naRemove = TRUE) {
+    .Call('markovchain_mcListFitForList', PACKAGE = 'markovchain', data, naRemove)
 }
 
-.matr2Mc <- function(matrData, laplacian = 0, sanitize = FALSE) {
-    .Call('markovchain__matr2Mc', PACKAGE = 'markovchain', matrData, laplacian, sanitize)
+.matr2Mc <- function(matrData, laplacian = 0, sanitize = FALSE, naRemove = TRUE) {
+    .Call('markovchain__matr2Mc', PACKAGE = 'markovchain', matrData, laplacian, sanitize, naRemove)
 }
 
-.list2Mc <- function(data, laplacian = 0, sanitize = FALSE) {
-    .Call('markovchain__list2Mc', PACKAGE = 'markovchain', data, laplacian, sanitize)
+.list2Mc <- function(data, laplacian = 0, sanitize = FALSE, naRemove = TRUE) {
+    .Call('markovchain__list2Mc', PACKAGE = 'markovchain', data, laplacian, sanitize, naRemove)
 }
 
 #' @name inferHyperparam
@@ -169,8 +169,8 @@ inferHyperparam <- function(transMatr = matrix(), scale = numeric(), data = char
 #' 
 #' @export
 #' 
-markovchainFit <- function(data, method = "mle", byrow = TRUE, nboot = 10L, laplacian = 0, name = "", parallel = FALSE, confidencelevel = 0.95, confint = TRUE, hyperparam = matrix(), sanitize = FALSE, possibleStates = character()) {
-    .Call('markovchain_markovchainFit', PACKAGE = 'markovchain', data, method, byrow, nboot, laplacian, name, parallel, confidencelevel, confint, hyperparam, sanitize, possibleStates)
+markovchainFit <- function(data, method = "mle", byrow = TRUE, nboot = 10L, laplacian = 0, name = "", parallel = FALSE, confidencelevel = 0.95, confint = TRUE, hyperparam = matrix(), sanitize = FALSE, possibleStates = character(), naRemove = TRUE) {
+    .Call('markovchain_markovchainFit', PACKAGE = 'markovchain', data, method, byrow, nboot, laplacian, name, parallel, confidencelevel, confint, hyperparam, sanitize, possibleStates, naRemove)
 }
 
 .commclassesKernelRcpp <- function(P) {
