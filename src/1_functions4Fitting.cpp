@@ -474,7 +474,7 @@ NumericMatrix _toRowProbs(NumericMatrix x, bool sanitize = false) {
 //' @export
 // [[Rcpp::export]]
 NumericMatrix createSequenceMatrix(SEXP stringchar, bool toRowProbs = false, bool sanitize = false,
-                                   CharacterVector possibleStates = CharacterVector()) {
+                                   CharacterVector possibleStates = CharacterVector(), bool naRemove = true) {
   
   //---------------------------------------------------------------------
   // check whether stringchar is a list or not
@@ -484,7 +484,7 @@ NumericMatrix createSequenceMatrix(SEXP stringchar, bool toRowProbs = false, boo
     for(int i = 0;i < seqs.size();i++) {
       CharacterVector tseq = unique(as<CharacterVector>(seqs[i]));
       for(int j = 0;j < tseq.size();j++) {
-        if(tseq[j] != "NA") {
+        if(!naRemove || tseq[j] != "NA") {
           pstates.push_back(tseq[j]);
         }
       }
@@ -501,7 +501,7 @@ NumericMatrix createSequenceMatrix(SEXP stringchar, bool toRowProbs = false, boo
     freqMatrix.attr("dimnames") = List::create(pstates, pstates);
     
     for(int i = 0;i < seqs.size();i++) {
-      NumericMatrix temp = createSequenceMatrix(seqs[i], false, false, pstates);
+      NumericMatrix temp = createSequenceMatrix(seqs[i], false, false, pstates, naRemove);
       freqMatrix += temp;
     }
     
@@ -527,10 +527,13 @@ NumericMatrix createSequenceMatrix(SEXP stringchar, bool toRowProbs = false, boo
   CharacterVector stringChar = as<CharacterVector>(stringchar);
   
   // may include missing values
-  CharacterVector elements_na = unique(union_(stringChar, possibleStates));
+  CharacterVector elements = unique(union_(stringChar, possibleStates));
   
-  // free from missing values
-  CharacterVector elements = clean_nas(elements_na);
+  if (naRemove){
+    // free from missing values
+    elements = clean_nas(elements);
+  }
+  
   elements = elements.sort();
   int sizeMatr = elements.size();
   
@@ -551,7 +554,7 @@ NumericMatrix createSequenceMatrix(SEXP stringchar, bool toRowProbs = false, boo
     // populate frequency matrix
     int posFrom = 0, posTo = 0;
     for(long int i = 0; i < seqMat.nrow(); i ++) {
-      if(seqMat(i, 0) != "NA" && seqMat(i, 1) != "NA") {
+      if(!naRemove || (seqMat(i, 0) != "NA" && seqMat(i, 1) != "NA")) {
         for (int j = 0; j < rnames.size(); j ++) {
           if(seqMat(i, 0) == rnames[j]) posFrom = j;
           if(seqMat(i, 1) == rnames[j]) posTo = j;
@@ -565,7 +568,7 @@ NumericMatrix createSequenceMatrix(SEXP stringchar, bool toRowProbs = false, boo
     
     int posFrom = 0, posTo = 0;
     for(long int i = 0; i < stringChar.size() - 1; i ++) {
-      if(stringChar[i] != "NA" && stringChar[i+1] != "NA"){
+      if(!naRemove || (stringChar[i] != "NA" && stringChar[i+1] != "NA")){
         for (int j = 0; j < rnames.size(); j ++) {
           if(stringChar[i] == rnames[j]) posFrom = j;
           if(stringChar[i + 1] == rnames[j]) posTo = j;
@@ -595,7 +598,7 @@ NumericMatrix createSequenceMatrix(SEXP stringchar, bool toRowProbs = false, boo
 }
 
 // log-likelihood
-double _loglikelihood(CharacterVector seq, NumericMatrix transMatr) {
+double _loglikelihood(CharacterVector seq, NumericMatrix transMatr, bool naRemove = true) {
   
   // to store the result
   double out = 0;
@@ -606,7 +609,7 @@ double _loglikelihood(CharacterVector seq, NumericMatrix transMatr) {
   // caculate out
   int from = 0, to = 0; 
   for(long int i = 0; i < seq.size() - 1; i ++) {
-    if(seq[i] != "NA" && seq[i+1] != "NA"){
+    if(!naRemove || (seq[i] != "NA" && seq[i+1] != "NA")){
       for(int r = 0; r < rnames.size(); r ++) {
         if(rnames[r] == seq[i]) from = r; 
         if(rnames[r] == seq[i + 1]) to = r; 
@@ -619,7 +622,7 @@ double _loglikelihood(CharacterVector seq, NumericMatrix transMatr) {
 }
 
 // [[Rcpp::export(.mcListFitForList)]]
-List mcListFitForList(List data) {
+List mcListFitForList(List data, bool naRemove = true) {
   
   int l = data.size(); // length of list
   
@@ -647,7 +650,7 @@ List mcListFitForList(List data) {
       CharacterMatrix temp(l-j, 2);
       // indicates wheter there is a valid transition for the current time of the
       // markov chain
-      bool validTransition = false;
+      bool validTransition = !naRemove;
       
       for(int k = j;k < l;k++) {
         temp(k-j, 0) = (as<CharacterVector>(data[length_seq[k].second]))[i-1];
@@ -659,7 +662,7 @@ List mcListFitForList(List data) {
       
       // frequency matrix
       if(validTransition)
-        out.push_back(createSequenceMatrix(temp, false, true));
+        out.push_back(createSequenceMatrix(temp, false, true, CharacterVector(), naRemove));
       
       i++;
       
@@ -756,9 +759,9 @@ List generateCI(double confidencelevel, NumericMatrix freqMatr) {
 
 // Fit DTMC using MLE
 List _mcFitMle(SEXP data, bool byrow, double confidencelevel, bool sanitize = false, 
-               CharacterVector possibleStates = CharacterVector()) {
+               CharacterVector possibleStates = CharacterVector(), bool naRemove = true) {
   
-  NumericMatrix freqMatr = createSequenceMatrix(data, false, false, possibleStates);
+  NumericMatrix freqMatr = createSequenceMatrix(data, false, false, possibleStates, naRemove);
   
   // matrix size = nrows = ncols
   int sizeMatr = freqMatr.nrow();
@@ -811,10 +814,10 @@ List _mcFitMle(SEXP data, bool byrow, double confidencelevel, bool sanitize = fa
 
 // Fit DTMC using Laplacian smooth
 List _mcFitLaplacianSmooth(CharacterVector stringchar, bool byrow, double laplacian = 0.01, bool sanitize = false,
-                           CharacterVector possibleStates = CharacterVector()) {
+                           CharacterVector possibleStates = CharacterVector(), bool naRemove = true) {
   
   // create frequency matrix
-  NumericMatrix origNum = createSequenceMatrix(stringchar, false, sanitize, possibleStates);
+  NumericMatrix origNum = createSequenceMatrix(stringchar, false, sanitize, possibleStates, naRemove);
   
   // store dimension of frequency matrix
   int nRows = origNum.nrow(), nCols = origNum.ncol();
@@ -1070,7 +1073,7 @@ List _bootstrapCharacterSequencesParallel(CharacterVector stringchar, int n, lon
 
 // Fit DTMC using bootstrap method
 List _mcFitBootStrap(CharacterVector data, int nboot, bool byrow, bool parallel, double confidencelevel, bool sanitize = false,
-                     CharacterVector possibleStates = CharacterVector()) {
+                     CharacterVector possibleStates = CharacterVector(), bool naRemove = true) {
   
   // list of sequence generated using given sequence
   List theList = (parallel) ? _bootstrapCharacterSequencesParallel(data, nboot, data.size()) : 
@@ -1085,11 +1088,11 @@ List _mcFitBootStrap(CharacterVector data, int nboot, bool byrow, bool parallel,
   // populate pmsBootStrapped 
   if(parallel)
     for(int i = 0; i < n; i++)
-      pmsBootStrapped[i] = createSequenceMatrix(theList[i], true, sanitize, possibleStates);
+      pmsBootStrapped[i] = createSequenceMatrix(theList[i], true, sanitize, possibleStates, naRemove);
   
   else 
     for(int i = 0; i < n; i++) 
-      pmsBootStrapped[i] = createSequenceMatrix(theList[i], true, sanitize, possibleStates);
+      pmsBootStrapped[i] = createSequenceMatrix(theList[i], true, sanitize, possibleStates, naRemove);
   
   
   List estimateList = _fromBoot2Estimate(pmsBootStrapped);
@@ -1153,7 +1156,7 @@ List _mcFitBootStrap(CharacterVector data, int nboot, bool byrow, bool parallel,
 
 // convert matrix data to transition probability matrix
 // [[Rcpp::export(.matr2Mc)]]
-S4 _matr2Mc(CharacterMatrix matrData, double laplacian = 0, bool sanitize = false) {
+S4 _matr2Mc(CharacterMatrix matrData, double laplacian = 0, bool sanitize = false, bool naRemove = true) {
   
   // dimension of input matrix
   long int nRows = matrData.nrow(), nCols = matrData.ncol();
@@ -1164,7 +1167,7 @@ S4 _matr2Mc(CharacterMatrix matrData, double laplacian = 0, bool sanitize = fals
   // populate uniqueVals set
   for(long int i = 0; i < nRows; i++) 
     for(long int j = 0; j < nCols; j++){
-      if(matrData(i,j) != "NA")
+      if(!naRemove || matrData(i,j) != "NA")
         uniqueVals.insert((std::string)matrData(i, j));	
     }
   // unique states
@@ -1183,7 +1186,7 @@ S4 _matr2Mc(CharacterMatrix matrData, double laplacian = 0, bool sanitize = fals
   int stateBegin = 0, stateEnd = 0;
   for(long int i = 0; i < nRows; i ++) {
     for(long int j = 1; j < nCols; j ++) {
-      if(matrData(i,j-1) != "NA" && matrData(i,j) != "NA"){
+      if(!naRemove || (matrData(i,j-1) != "NA" && matrData(i,j) != "NA")){
         // row and column number of begin state and end state
         int k = 0;
         for(it = uniqueVals.begin(); it != uniqueVals.end(); ++it, k++) {
@@ -1564,7 +1567,7 @@ List inferHyperparam(NumericMatrix transMatr = NumericMatrix(), NumericVector sc
 List markovchainFit(SEXP data, String method = "mle", bool byrow = true, int nboot = 10, double laplacian = 0,
                 String name = "", bool parallel = false, double confidencelevel = 0.95, bool confint = true, 
                 NumericMatrix hyperparam = NumericMatrix(), bool sanitize = false, 
-                CharacterVector possibleStates = CharacterVector()) {
+                CharacterVector possibleStates = CharacterVector(), naRemove = true) {
   
   // list to store the output
   List out;
@@ -1595,7 +1598,7 @@ List markovchainFit(SEXP data, String method = "mle", bool byrow = true, int nbo
   	  mat = _transpose(mat); 
   	}
   	
-   	S4 outMc =_matr2Mc(mat, laplacian, sanitize);
+   	S4 outMc =_matr2Mc(mat, laplacian, sanitize, naRemove);
   	
   	// whether to compute confidence interval or not
   	if(confint) {
@@ -1606,30 +1609,30 @@ List markovchainFit(SEXP data, String method = "mle", bool byrow = true, int nbo
   	    manyseq[i] = mat(i,_);
   	  }
   	  
-  	  out = _mcFitMle(manyseq, byrow, confidencelevel, sanitize, possibleStates);
+  	  out = _mcFitMle(manyseq, byrow, confidencelevel, sanitize, possibleStates, naRemove);
   	  out[0] = outMc;
   	} else {
   	  out = List::create(_["estimate"] = outMc);
   	}
   }
   else if(TYPEOF(data) == VECSXP) { 
-    out = _mcFitMle(data, byrow, confidencelevel, sanitize, possibleStates);
+    out = _mcFitMle(data, byrow, confidencelevel, sanitize, possibleStates, naRemove);
   }
   else {
     if(method == "mle") {
-      out = _mcFitMle(data, byrow, confidencelevel, sanitize, possibleStates);
+      out = _mcFitMle(data, byrow, confidencelevel, sanitize, possibleStates, naRemove);
     }
     
     if(method == "bootstrap") {
-      out = _mcFitBootStrap(data, nboot, byrow, parallel, confidencelevel, sanitize, possibleStates);
+      out = _mcFitBootStrap(data, nboot, byrow, parallel, confidencelevel, sanitize, possibleStates, naRemove);
     }
   
     if(method == "laplace") {
-      out = _mcFitLaplacianSmooth(data, byrow, laplacian, sanitize, possibleStates);
+      out = _mcFitLaplacianSmooth(data, byrow, laplacian, sanitize, possibleStates, naRemove);
     }
     
     if(method == "map") {
-      out = _mcFitMap(data, byrow, confidencelevel, hyperparam, sanitize, possibleStates);
+      out = _mcFitMap(data, byrow, confidencelevel, hyperparam, sanitize, possibleStates, naRemove);
     }
   }
   
@@ -1644,7 +1647,7 @@ List markovchainFit(SEXP data, String method = "mle", bool byrow = true, int nbo
   
   // data is neither data frame nor matrix
   if(!Rf_inherits(data, "data.frame") && !Rf_isMatrix(data) && TYPEOF(data) != VECSXP) 
-    out["logLikelihood"] = _loglikelihood(data, transMatr);
+    out["logLikelihood"] = _loglikelihood(data, transMatr, naRemove);
   
   estimate.slot("states") = rownames(transMatr);
   out["estimate"] = estimate;
