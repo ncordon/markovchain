@@ -597,7 +597,7 @@ rmarkovchain <- function(n, object, what = "data.frame", useRCpp = TRUE, paralle
 #' # fitting a markovchainList
 #' mclistFit <- markovchainListFit(data = holson[, 2:12], name = "holsonMcList")
 
-markovchainListFit <- function(data, byrow = TRUE, laplacian = 0, name) {
+markovchainListFit <- function(data, byrow = TRUE, laplacian = 0, name, naRemove = TRUE) {
   
   # check the format of input data
   if (!any((class(data) %in% c("data.frame", "matrix", "list")))) {
@@ -609,7 +609,7 @@ markovchainListFit <- function(data, byrow = TRUE, laplacian = 0, name) {
   if(class(data) == "list") {
     markovchains <- list()
     # list of frquency matrix
-    freqMatrixes <- .mcListFitForList(data)
+    freqMatrixes <- .mcListFitForList(data, naRemove)
     
   } else{
     # if input is data frame convert it to matrix
@@ -632,8 +632,8 @@ markovchainListFit <- function(data, byrow = TRUE, laplacian = 0, name) {
       matrData[1, ] <- as.character(matrData[1, ])
       validTransition <- any(apply(matrData, 1, function(x){ !any(is.na(x)) }))
       
-      if(validTransition)
-        createSequenceMatrix(matrData, toRowProbs = FALSE, sanitize = TRUE)
+      if(!naRemove || validTransition)
+        createSequenceMatrix(matrData, toRowProbs = FALSE, sanitize = TRUE, c(), naRemove)
     
     })
     
