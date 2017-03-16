@@ -131,8 +131,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // createSequenceMatrix
-NumericMatrix createSequenceMatrix(SEXP stringchar, bool toRowProbs, bool sanitize, CharacterVector possibleStates);
-RcppExport SEXP markovchain_createSequenceMatrix(SEXP stringcharSEXP, SEXP toRowProbsSEXP, SEXP sanitizeSEXP, SEXP possibleStatesSEXP) {
+NumericMatrix createSequenceMatrix(SEXP stringchar, bool toRowProbs, bool sanitize, CharacterVector possibleStates, bool naRemove);
+RcppExport SEXP markovchain_createSequenceMatrix(SEXP stringcharSEXP, SEXP toRowProbsSEXP, SEXP sanitizeSEXP, SEXP possibleStatesSEXP, SEXP naRemoveSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -140,44 +140,48 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type toRowProbs(toRowProbsSEXP);
     Rcpp::traits::input_parameter< bool >::type sanitize(sanitizeSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type possibleStates(possibleStatesSEXP);
-    rcpp_result_gen = Rcpp::wrap(createSequenceMatrix(stringchar, toRowProbs, sanitize, possibleStates));
+    Rcpp::traits::input_parameter< bool >::type naRemove(naRemoveSEXP);
+    rcpp_result_gen = Rcpp::wrap(createSequenceMatrix(stringchar, toRowProbs, sanitize, possibleStates, naRemove));
     return rcpp_result_gen;
 END_RCPP
 }
 // mcListFitForList
-List mcListFitForList(List data);
-RcppExport SEXP markovchain_mcListFitForList(SEXP dataSEXP) {
+List mcListFitForList(List data, bool naRemove);
+RcppExport SEXP markovchain_mcListFitForList(SEXP dataSEXP, SEXP naRemoveSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(mcListFitForList(data));
+    Rcpp::traits::input_parameter< bool >::type naRemove(naRemoveSEXP);
+    rcpp_result_gen = Rcpp::wrap(mcListFitForList(data, naRemove));
     return rcpp_result_gen;
 END_RCPP
 }
 // _matr2Mc
-S4 _matr2Mc(CharacterMatrix matrData, double laplacian, bool sanitize);
-RcppExport SEXP markovchain__matr2Mc(SEXP matrDataSEXP, SEXP laplacianSEXP, SEXP sanitizeSEXP) {
+S4 _matr2Mc(CharacterMatrix matrData, double laplacian, bool sanitize, bool naRemove);
+RcppExport SEXP markovchain__matr2Mc(SEXP matrDataSEXP, SEXP laplacianSEXP, SEXP sanitizeSEXP, SEXP naRemoveSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterMatrix >::type matrData(matrDataSEXP);
     Rcpp::traits::input_parameter< double >::type laplacian(laplacianSEXP);
     Rcpp::traits::input_parameter< bool >::type sanitize(sanitizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(_matr2Mc(matrData, laplacian, sanitize));
+    Rcpp::traits::input_parameter< bool >::type naRemove(naRemoveSEXP);
+    rcpp_result_gen = Rcpp::wrap(_matr2Mc(matrData, laplacian, sanitize, naRemove));
     return rcpp_result_gen;
 END_RCPP
 }
 // _list2Mc
-S4 _list2Mc(List data, double laplacian, bool sanitize);
-RcppExport SEXP markovchain__list2Mc(SEXP dataSEXP, SEXP laplacianSEXP, SEXP sanitizeSEXP) {
+S4 _list2Mc(List data, double laplacian, bool sanitize, bool naRemove);
+RcppExport SEXP markovchain__list2Mc(SEXP dataSEXP, SEXP laplacianSEXP, SEXP sanitizeSEXP, SEXP naRemoveSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type data(dataSEXP);
     Rcpp::traits::input_parameter< double >::type laplacian(laplacianSEXP);
     Rcpp::traits::input_parameter< bool >::type sanitize(sanitizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(_list2Mc(data, laplacian, sanitize));
+    Rcpp::traits::input_parameter< bool >::type naRemove(naRemoveSEXP);
+    rcpp_result_gen = Rcpp::wrap(_list2Mc(data, laplacian, sanitize, naRemove));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -195,8 +199,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // markovchainFit
-List markovchainFit(SEXP data, String method, bool byrow, int nboot, double laplacian, String name, bool parallel, double confidencelevel, bool confint, NumericMatrix hyperparam, bool sanitize, CharacterVector possibleStates);
-RcppExport SEXP markovchain_markovchainFit(SEXP dataSEXP, SEXP methodSEXP, SEXP byrowSEXP, SEXP nbootSEXP, SEXP laplacianSEXP, SEXP nameSEXP, SEXP parallelSEXP, SEXP confidencelevelSEXP, SEXP confintSEXP, SEXP hyperparamSEXP, SEXP sanitizeSEXP, SEXP possibleStatesSEXP) {
+List markovchainFit(SEXP data, String method, bool byrow, int nboot, double laplacian, String name, bool parallel, double confidencelevel, bool confint, NumericMatrix hyperparam, bool sanitize, CharacterVector possibleStates, bool naRemove);
+RcppExport SEXP markovchain_markovchainFit(SEXP dataSEXP, SEXP methodSEXP, SEXP byrowSEXP, SEXP nbootSEXP, SEXP laplacianSEXP, SEXP nameSEXP, SEXP parallelSEXP, SEXP confidencelevelSEXP, SEXP confintSEXP, SEXP hyperparamSEXP, SEXP sanitizeSEXP, SEXP possibleStatesSEXP, SEXP naRemoveSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -212,7 +216,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericMatrix >::type hyperparam(hyperparamSEXP);
     Rcpp::traits::input_parameter< bool >::type sanitize(sanitizeSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type possibleStates(possibleStatesSEXP);
-    rcpp_result_gen = Rcpp::wrap(markovchainFit(data, method, byrow, nboot, laplacian, name, parallel, confidencelevel, confint, hyperparam, sanitize, possibleStates));
+    Rcpp::traits::input_parameter< bool >::type naRemove(naRemoveSEXP);
+    rcpp_result_gen = Rcpp::wrap(markovchainFit(data, method, byrow, nboot, laplacian, name, parallel, confidencelevel, confint, hyperparam, sanitize, possibleStates, naRemove));
     return rcpp_result_gen;
 END_RCPP
 }

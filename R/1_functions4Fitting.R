@@ -633,7 +633,7 @@ markovchainListFit <- function(data, byrow = TRUE, laplacian = 0, name, naRemove
       validTransition <- any(apply(matrData, 1, function(x){ !any(is.na(x)) }))
       
       if(!naRemove || validTransition)
-        createSequenceMatrix(matrData, toRowProbs = FALSE, sanitize = TRUE, c(), naRemove)
+        createSequenceMatrix(matrData, toRowProbs = FALSE, sanitize = TRUE, character(0), naRemove)
     
     })
     

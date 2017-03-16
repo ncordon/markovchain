@@ -1244,7 +1244,7 @@ S4 _matr2Mc(CharacterMatrix matrData, double laplacian = 0, bool sanitize = fals
 
 // convert matrix data to transition probability matrix
 // [[Rcpp::export(.list2Mc)]]
-S4 _list2Mc(List data, double laplacian = 0, bool sanitize = false) {
+S4 _list2Mc(List data, double laplacian = 0, bool sanitize = false, bool naRemove = true) {
   
   // set of states
   std::set<std::string> uniqueVals;
@@ -1253,7 +1253,8 @@ S4 _list2Mc(List data, double laplacian = 0, bool sanitize = false) {
   for(long int i = 0; i < data.size(); i++) {
     CharacterVector temp = as<CharacterVector>(data[i]);
     for(long int j = 0; j < temp.size(); j++) {
-      uniqueVals.insert((std::string)temp[j]);
+      if(!naRemove || temp[j] != "NA")
+        uniqueVals.insert((std::string)temp[j]);
     }
   }
   
@@ -1274,20 +1275,21 @@ S4 _list2Mc(List data, double laplacian = 0, bool sanitize = false) {
   for(long int i = 0; i < data.size(); i ++) {
     CharacterVector temp = as<CharacterVector>(data[i]);
     for(long int j = 1; j < temp.size(); j ++) {
-      
-      // row and column number of begin state and end state
-      int k = 0;
-      for(it = uniqueVals.begin(); it != uniqueVals.end(); ++it, k++) {
-        if(*it == (std::string)temp[j-1]) {
-          stateBegin = k;
+      if(!naRemove || (temp[j-1] != "NA" && temp[j] != "NA")){
+        // row and column number of begin state and end state
+        int k = 0;
+        for(it = uniqueVals.begin(); it != uniqueVals.end(); ++it, k++) {
+          if(*it == (std::string)temp[j-1]) {
+            stateBegin = k;
+          }
+          
+          if(*it == (std::string)temp[j]) {
+            stateEnd = k;
+          }
         }
         
-        if(*it == (std::string)temp[j]) {
-          stateEnd = k;
-        }
+        contingencyMatrix(stateBegin,stateEnd)++;
       }
-      
-      contingencyMatrix(stateBegin,stateEnd)++;
     }
   }
   
@@ -1567,7 +1569,7 @@ List inferHyperparam(NumericMatrix transMatr = NumericMatrix(), NumericVector sc
 List markovchainFit(SEXP data, String method = "mle", bool byrow = true, int nboot = 10, double laplacian = 0,
                 String name = "", bool parallel = false, double confidencelevel = 0.95, bool confint = true, 
                 NumericMatrix hyperparam = NumericMatrix(), bool sanitize = false, 
-                CharacterVector possibleStates = CharacterVector(), naRemove = true) {
+                CharacterVector possibleStates = CharacterVector(), bool naRemove = true) {
   
   // list to store the output
   List out;

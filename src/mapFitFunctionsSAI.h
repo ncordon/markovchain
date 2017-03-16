@@ -139,7 +139,7 @@ List _mcFitMap(CharacterVector stringchar, bool byrow, double confidencelevel, N
   // populate frequeny matrix for old data; this is used for inference 
   int posFrom = 0, posTo = 0;
   for(long int i = 0; i < stringchar.size() - 1; i ++) {
-    if(naRemove && stringchar[i] != "NA" && stringchar[i+1] != "NA"){
+    if(!naRemove || (stringchar[i] != "NA" && stringchar[i+1] != "NA")){
       for (int j = 0; j < sizeMatr; j ++) {
         if(stringchar[i] == elements[j]) posFrom = j;
         if(stringchar[i + 1] == elements[j]) posTo = j;
