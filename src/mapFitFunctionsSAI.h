@@ -12,6 +12,16 @@ CharacterVector clean_nas(CharacterVector elements_na){
   return elements;
 }
   
+/*
+ * Forces all the elements to be of type character
+ * Used to coerce NA into string
+ */
+  
+void to_string(CharacterVector elements){
+  for(int i = 0; i < elements.size(); i++){
+    elements[i] = String(elements[i]);
+  }
+}
 
 List _mcFitMap(CharacterVector stringchar, bool byrow, double confidencelevel, NumericMatrix hyperparam = NumericMatrix(), 
                bool sanitize = false, CharacterVector possibleStates = CharacterVector(), bool naRemove = true) {
@@ -19,6 +29,7 @@ List _mcFitMap(CharacterVector stringchar, bool byrow, double confidencelevel, N
   // vector that could contain NA values
   CharacterVector elements = stringchar;
   elements = unique(union_(elements, possibleStates)).sort();
+  to_string(elements);
   
   if (naRemove){
     // Remove NA values

@@ -528,6 +528,7 @@ NumericMatrix createSequenceMatrix(SEXP stringchar, bool toRowProbs = false, boo
   
   // may include missing values
   CharacterVector elements = unique(union_(stringChar, possibleStates));
+  to_string(elements);
   
   if (naRemove){
     // free from missing values
