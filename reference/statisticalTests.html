@@ -67,7 +67,7 @@ Verifies that the s elements in the input list belongs to the same DTMC" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">markovchain</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9.14</span>
       </span>
     </div>
 
@@ -200,12 +200,12 @@ with a theoretical one. It is a chi-square based test</p>
     <pre class="examples"><div class='input'><span class='no'>sequence</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>,
               <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>, <span class='st'>"a"</span>)
 <span class='no'>mcFit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='markovchainFit.html'>markovchainFit</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sequence</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>verifyMarkovProperty</span>(<span class='no'>sequence</span>)</div><div class='output co'>#&gt; Testing markovianity property on given data sequence
+<span class='fu'>verifyMarkovProperty</span>(<span class='no'>sequence</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The accuracy of the statistical inference functions has been questioned. It will be thoroughly investigated in future versions of the package.</span></div><div class='output co'>#&gt; Testing markovianity property on given data sequence
 #&gt; Chi - square statistic is: 0.28 
 #&gt; Degrees of freedom are: 8 
-#&gt; And corresponding p-value is: 0.9999857 </div><div class='input'><span class='fu'>assessOrder</span>(<span class='no'>sequence</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The correctness of this function is in question. It will be deeply revised in the forthcoming versions.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt; The assessOrder test statistic is:  1.55307e-31 
+#&gt; And corresponding p-value is: 0.9999857 </div><div class='input'><span class='fu'>assessOrder</span>(<span class='no'>sequence</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The accuracy of the statistical inference functions has been questioned. It will be thoroughly investigated in future versions of the package.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt; The assessOrder test statistic is:  1.55307e-31 
 #&gt; The Chi-Square d.f. are:  2 
-#&gt; The p-value is:  1 </div><div class='input'><span class='fu'>assessStationarity</span>(<span class='no'>sequence</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The correctes of this function is in question. It will be deeply revised in the forthcoming versions.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt; The assessStationarity test statistic is:  0.1960191 
+#&gt; The p-value is:  1 </div><div class='input'><span class='fu'>assessStationarity</span>(<span class='no'>sequence</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The accuracy of the statistical inference functions has been questioned. It will be thoroughly investigated in future versions of the package.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt; The assessStationarity test statistic is:  0.1960191 
 #&gt; The Chi-Square d.f. are:  0 
 #&gt; The p-value is:  0 </div><div class='input'>
 
@@ -220,7 +220,7 @@ with a theoretical one. It is a chi-square based test</p>
 <span class='no'>mc</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5</span>/<span class='fl'>8</span>,<span class='fl'>1</span>/<span class='fl'>4</span>,<span class='fl'>1</span>/<span class='fl'>8</span>,<span class='fl'>1</span>/<span class='fl'>4</span>,<span class='fl'>1</span>/<span class='fl'>2</span>,<span class='fl'>1</span>/<span class='fl'>4</span>,<span class='fl'>1</span>/<span class='fl'>4</span>,<span class='fl'>3</span>/<span class='fl'>8</span>,<span class='fl'>3</span>/<span class='fl'>8</span>),<span class='kw'>byrow</span><span class='kw'>=</span><span class='fl'>TRUE</span>, <span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>3</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>mc</span>)<span class='kw'>&lt;-</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>mc</span>)<span class='kw'>&lt;-</span><span class='fl'>0</span>:<span class='fl'>2</span>; <span class='no'>theoreticalMc</span><span class='kw'>&lt;-</span><span class='fu'>as</span>(<span class='no'>mc</span>, <span class='st'>"markovchain"</span>)
 
-<span class='fu'>verifyEmpiricalToTheoretical</span>(<span class='kw'>data</span><span class='kw'>=</span><span class='no'>sequence</span>,<span class='kw'>object</span><span class='kw'>=</span><span class='no'>theoreticalMc</span>)</div><div class='output co'>#&gt; Testing whether the
+<span class='fu'>verifyEmpiricalToTheoretical</span>(<span class='kw'>data</span><span class='kw'>=</span><span class='no'>sequence</span>,<span class='kw'>object</span><span class='kw'>=</span><span class='no'>theoreticalMc</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The accuracy of the statistical inference functions has been questioned. It will be thoroughly investigated in future versions of the package.</span></div><div class='output co'>#&gt; Testing whether the
 #&gt;    0  1  2
 #&gt; 0 51 11  8
 #&gt; 1 12 31  9
@@ -244,7 +244,7 @@ with a theoretical one. It is a chi-square based test</p>
 #&gt; </div><div class='input'>
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>kullback</span>)
-<span class='fu'>verifyHomogeneity</span>(<span class='kw'>inputList</span><span class='kw'>=</span><span class='no'>kullback</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Testing homogeneity of DTMC underlying input list 
+<span class='fu'>verifyHomogeneity</span>(<span class='kw'>inputList</span><span class='kw'>=</span><span class='no'>kullback</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The accuracy of the statistical inference functions has been questioned. It will be thoroughly investigated in future versions of the package.</span></div><div class='output co'>#&gt; Testing homogeneity of DTMC underlying input list 
 #&gt; ChiSq statistic is 275.9963 d.o.f are 35 corresponding p-value is 0 </div><div class='output co'>#&gt; $statistic
 #&gt; [1] 275.9963
 #&gt; 
@@ -277,7 +277,7 @@ with a theoretical one. It is a chi-square based test</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Giorgio Alfredo Spedicato, Tae Seung Kang, Sai Bhargav Yalamanchi.</p>
+  <p>Developed by Giorgio Alfredo Spedicato, Tae Seung Kang, Sai Bhargav Yalamanchi, Deepak Yadav.</p>
 </div>
 
 <div class="pkgdown">
