@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">markovchain</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9.14</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -83,19 +83,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/GSoC-2017_additions.html">GSoC-2017_Additions</a>
-    </li>
-    <li>
       <a href="../articles/an_introduction_to_markovchain_package.pdf">The markovchain Package: A Package for Easily Handling Discrete Markov Chains in R (PDF)</a>
     </li>
     <li>
-      <a href="../articles/complicateSteadyStates.html">Complicate Steady States Analysis</a>
+      <a href="../articles/gsoc_2017_additions.pdf">Google Summer of Code 2017 Additions (PDF)</a>
     </li>
     <li>
       <a href="../articles/higher_order_markov_chains.pdf">Higher, possibly multivariate, Order Markov Chains in markovchain package (PDF)</a>
     </li>
     <li>
-      <a href="../articles/markovchainCrashIntro.pdf">Crash Introduction to markovchain R package (PDF)</a>
+      <a href="../articles/markvochain_crash_intro.pdf">Crash Introduction to markovchain R package (PDF)</a>
     </li>
   </ul>
 </li>
@@ -149,13 +146,13 @@
         <td>
           <p><code><a href="HigherOrderMarkovChain-class.html">HigherOrderMarkovChain-class</a></code> </p>
         </td>
-        <td><p>Class <code>"HigherOrderMarkovChain"</code></p></td>
+        <td><p>Higher order Markov Chains class</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="absorbingStates.html">absorbingStates()</a></code> <code><a href="absorbingStates.html">transientStates()</a></code> <code><a href="absorbingStates.html">canonicForm()</a></code> <code><a href="absorbingStates.html">communicatingClasses()</a></code> <code><a href="absorbingStates.html">recurrentClasses()</a></code> <code><a href="absorbingStates.html">period()</a></code> </p>
+          <p><code><a href="absorptionProbabilities.html">absorptionProbabilities()</a></code> </p>
         </td>
-        <td><p>Various function to perform structural analysis of DTMC</p></td>
+        <td><p>Absorption probabilities</p></td>
       </tr><tr>
         
         <td>
@@ -185,7 +182,7 @@
         <td>
           <p><code><a href="ctmc-class.html">ctmc-class</a></code> </p>
         </td>
-        <td><p>Class <code>"ctmc"</code></p></td>
+        <td><p>Continuous time Markov Chains class</p></td>
       </tr><tr>
         
         <td>
@@ -225,7 +222,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="fitHigherOrderMarkovChain.html">fitHigherOrder()</a></code> <code><a href="fitHigherOrderMarkovChain.html">seq2freqProb()</a></code> <code><a href="fitHigherOrderMarkovChain.html">seq2matHigh()</a></code> </p>
+          <p><code><a href="fitHigherOrder.html">fitHigherOrder()</a></code> <code><a href="fitHigherOrder.html">seq2freqProb()</a></code> <code><a href="fitHigherOrder.html">seq2matHigh()</a></code> </p>
         </td>
         <td><p>Functions to fit a higher order Markov chain</p></td>
       </tr><tr>
@@ -239,13 +236,19 @@
         <td>
           <p><code><a href="generatorToTransitionMatrix.html">generatorToTransitionMatrix()</a></code> </p>
         </td>
-        <td><p>Function to obtain the transition matrix from the generator.</p></td>
+        <td><p>Function to obtain the transition matrix from the generator</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="getName.html">name()</a></code> </p>
         </td>
         <td><p>Method to retrieve name of markovchain object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="hittingProbabilities.html">hittingProbabilities()</a></code> </p>
+        </td>
+        <td><p>Hitting probabilities for markovchain</p></td>
       </tr><tr>
         
         <td>
@@ -305,7 +308,13 @@
         <td>
           <p><code><a href="is.irreducible.html">is.irreducible()</a></code> </p>
         </td>
-        <td><p>Function to check if a Markov chain is irreducible</p></td>
+        <td><p>Function to check if a Markov chain is irreducible (i.e. ergodic)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is.regular.html">is.regular()</a></code> </p>
+        </td>
+        <td><p>Check if a DTMC is regular</p></td>
       </tr><tr>
         
         <td>
@@ -317,11 +326,11 @@
         <td>
           <p><code><a href="markovchain-class.html">markovchain-class</a></code> </p>
         </td>
-        <td><p>Class <code>"markovchain"</code></p></td>
+        <td><p>Markov Chain class</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="markovchain-package.html">markovchain-package</a></code> </p>
+          <p><code><a href="markovchain.html">markovchain-package</a></code> </p>
         </td>
         <td><p>Easy Handling Discrete Time Markov Chains</p></td>
       </tr><tr>
@@ -335,7 +344,7 @@
         <td>
           <p><code><a href="markovchainList-class.html">markovchainList-class</a></code> </p>
         </td>
-        <td><p>Class <code>"markovchainList"</code></p></td>
+        <td><p>Non homogeneus discrete time Markov Chains class</p></td>
       </tr><tr>
         
         <td>
@@ -351,9 +360,39 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="meanAbsorptionTime.html">meanAbsorptionTime()</a></code> </p>
+        </td>
+        <td><p>Mean absorption time</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="meanFirstPassageTime.html">meanFirstPassageTime()</a></code> </p>
+        </td>
+        <td><p>Mean First Passage Time for irreducible Markov chains</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="meanNumVisits.html">meanNumVisits()</a></code> </p>
+        </td>
+        <td><p>Mean num of visits for markovchain, starting at each state</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="meanRecurrenceTime.html">meanRecurrenceTime()</a></code> </p>
+        </td>
+        <td><p>Mean recurrence time</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="multinomialConfidenceIntervals.html">multinomialConfidenceIntervals()</a></code> </p>
         </td>
         <td><p>A function to compute multinomial confidence intervals of DTMC</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="names.html">names(<i>&lt;markovchain&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Returns the states for a Markov chain object</p></td>
       </tr><tr>
         
         <td>
@@ -371,7 +410,7 @@
         <td>
           <p><code><a href="predictiveDistribution.html">predictiveDistribution()</a></code> </p>
         </td>
-        <td><p>Function to compute the probability of observing a new data set, given a data set</p></td>
+        <td><p>predictiveDistribution</p></td>
       </tr><tr>
         
         <td>
@@ -383,7 +422,7 @@
         <td>
           <p><code><a href="priorDistribution.html">priorDistribution()</a></code> </p>
         </td>
-        <td><p>Prior Distribution</p></td>
+        <td><p>priorDistribution</p></td>
       </tr><tr>
         
         <td>
@@ -401,7 +440,7 @@
         <td>
           <p><code><a href="rctmc.html">rctmc()</a></code> </p>
         </td>
-        <td><p>Function to generate a sequence of random CTMC transitions.</p></td>
+        <td><p>rctmc</p></td>
       </tr><tr>
         
         <td>
@@ -437,7 +476,13 @@
         <td>
           <p><code><a href="steadyStates.html">steadyStates()</a></code> </p>
         </td>
-        <td><p>Stationary states of a <code>markovchain</code> objeect</p></td>
+        <td><p>Stationary states of a <code>markovchain</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="structuralAnalysis.html">period()</a></code> <code><a href="structuralAnalysis.html">communicatingClasses()</a></code> <code><a href="structuralAnalysis.html">recurrentClasses()</a></code> <code><a href="structuralAnalysis.html">transientClasses()</a></code> <code><a href="structuralAnalysis.html">transientStates()</a></code> <code><a href="structuralAnalysis.html">recurrentStates()</a></code> <code><a href="structuralAnalysis.html">absorbingStates()</a></code> <code><a href="structuralAnalysis.html">canonicForm()</a></code> </p>
+        </td>
+        <td><p>Various function to perform structural analysis of DTMC</p></td>
       </tr><tr>
         
         <td>
@@ -472,7 +517,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Giorgio Alfredo Spedicato, Tae Seung Kang, Sai Bhargav Yalamanchi, Deepak Yadav.</p>
+  <p>Developed by Giorgio Alfredo Spedicato, Tae Seung Kang, Sai Bhargav Yalamanchi, Deepak Yadav, Ignacio Cordón.</p>
 </div>
 
 <div class="pkgdown">
